@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+
+    environment {
+        DIRECTORY_PATH = "C:\Users\manme\Downloads\jenkinsfile"
+        TESTING_ENVIRONMENT = "testing"
+        PRODUCTION_ENVIRONMENT = "YourNameProduction"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Fetching the source code from ${DIRECTORY_PATH}"
+                echo "Compiling the code and generating necessary artifacts"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running unit tests"
+                echo "Running integration tests"
+            }
+        }
+
+        stage('Code Quality Check') {
+            steps {
+                echo "Checking the quality of the code"
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying the application to a testing environment: ${TESTING_ENVIRONMENT}"
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                echo "Waiting for manual approval..."
+                sleep(time: 10, unit: 'SECONDS')
+                echo "Manual approval received. Proceeding to deploy to production."
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                echo "Deploying the code to the production environment: ${PRODUCTION_ENVIRONMENT}"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline executed successfully"
+        }
+        failure {
+            echo "Pipeline execution failed"
+        }
+    }
+}
